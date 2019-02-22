@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MUD
@@ -16,7 +17,7 @@ namespace MUD
 
     public string Print()
     {
-      List<List<char>> data = new List<List<char>>();
+      List<char[,]> data = new List<char[,]>();
 
       // Print all of the render areas in order
       var buffers = Buffers.OrderBy(x => x.RenderOrder);
@@ -24,7 +25,6 @@ namespace MUD
         data.Add(b.Print(this));
 
       // Now, we'll overlay them in the order that they need to be rendered
-
       int wndW = WindowSize.Width - WindowSize.X;
       int wndH = WindowSize.Height - WindowSize.Y;
       char[,] renderdata = new char[wndH, wndW];
@@ -34,8 +34,8 @@ namespace MUD
         {
           for (int x = 0; x < wndW; x++)
           {
-            var c = dl[y * wndW + x];
-            if (c != ' ' && c != 0)
+            var c = dl[y, x];
+            if (c != 0)
               renderdata[y, x] = c;
           }
         }
@@ -43,8 +43,12 @@ namespace MUD
 
       // Finally, print the composite to the console
       string toPrint = "";
-      foreach (var c in renderdata)
-        toPrint += c;
+      for (int y = 0; y < wndH; y++)
+      {
+        for (int x = 0; x < wndW; x++)
+          toPrint += renderdata[y, x];
+        toPrint += Environment.NewLine;
+      }
 
       return toPrint;
     }

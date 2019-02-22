@@ -4,19 +4,14 @@ using System.IO;
 
 namespace MUD
 {
-  public class Map
+  public class Map : RenderArea
   {
     public const char Character = 'X';
     public int X { get; private set; }
     public int Y { get; private set; }
-    public int Width { get; private set; }
-    public int Height { get; private set; }
-    public char[,] Tiles { get; private set; }
+    private char[,] OriginalMap;
 
-    public Map(string mapFile, ConsoleWindow wnd)
-    {
-      Load(mapFile);
-    }
+    public Map(ConsoleWindow wnd) : base(wnd) { }
 
     public void Load(string mapFile)
     {
@@ -24,6 +19,7 @@ namespace MUD
         return;
 
       List<List<char>> map = new List<List<char>>();
+
 
       var lines = File.ReadAllLines(mapFile);
       foreach (var r in lines)
@@ -33,26 +29,27 @@ namespace MUD
           buf.Add(c);
         map.Add(buf);
 
-        if (Width <= buf.Count)
-          Width = buf.Count;
+        if (BufferBounds.Width <= buf.Count)
+          BufferBounds.Width = buf.Count;
       }
-      Height = map.Count;
+      BufferBounds.Height = map.Count;
 
-      Tiles = new char[Height, Width];
+      OriginalMap = new char[BufferBounds.Height, BufferBounds.Width];
+
       int rr = 0, cc = 0;
       foreach (var h in map)
       {
         cc = 0;
         foreach (var w in h)
         {
-          Tiles[rr, cc] = w;
+          OriginalMap[rr, cc] = w;
 
           // Start character position
           if (w == Character)
           {
             X = cc;
             Y = rr;
-            Tiles[rr, cc] = ' ';
+            OriginalMap[rr, cc] = ' ';
           }
 
           cc++;
@@ -61,20 +58,13 @@ namespace MUD
       }
     }
 
-    public void Print()
+    public override void Update()
     {
-      Console.Clear();
-      for (int r = 0; r < Height; r++)
-      {
-        for (int c = 0; c < Width; c++)
-        {
-          if (r == Y && c == X)
-            Console.Write(Character);
-          else
-            Console.Write(Tiles[r, c]);
-        }
-        Console.Write(Environment.NewLine);
-      }
+      // Create a full copy of the map
+      Buffer = SetRegion(OriginalMap, BufferBounds, BufferBounds, BufferBounds);
+
+      // Set the player position
+      Buffer[Y, X] = Character;
     }
 
     public enum Direction
@@ -106,14 +96,14 @@ namespace MUD
       }
 
       // Bounds check
-      if (newX < 0 || newX >= Width || newY < 0 || newY >= Height)
+      if (newX < 0 || newX >= BufferBounds.Width || newY < 0 || newY >= BufferBounds.Height)
       {
         //ShowMessage("You can't move that direction!");
         return;
       }
 
       // Solid object check (can't walk through them)
-      if (Tiles[newY, newX] == '#')
+      if (OriginalMap[newY, newX] == '#')
       {
         //ShowMessage("That's a wall, and you're not Bobby.");
         return;
@@ -123,9 +113,6 @@ namespace MUD
       Y = newY;
 
       // TODO: Item check, something to pick up?
-
-      // Show the updated map
-      Print();
     }
   }
 }

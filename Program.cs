@@ -15,13 +15,14 @@ namespace MUD
         WindowSize = new Rectangle(0, 0, 80, 40)
       };
 
-      Map map = new Map(".\\maps\\test.map", wnd);
+      Map map = new Map(wnd);
+      map.Load(".\\maps\\test.map");
       HUD hud = new HUD(wnd);
 
       ConsoleKeyInfo key;
       do
       {
-        //Console.Clear();
+        Console.Clear();
         Console.Write(wnd.Print());
 
         key = Console.ReadKey(true);
