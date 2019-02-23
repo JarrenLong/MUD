@@ -115,8 +115,20 @@ namespace MUD
       }
 
       // Move the render window for the scrolling effect
-      RenderBounds.X += newX - X;
-      RenderBounds.Y += newY - Y;
+
+      // Keep the render window centered on the player if possible
+      RenderBounds.X = newX - (RenderBounds.Width / 2);
+      RenderBounds.Y = newY - (RenderBounds.Height / 2);
+
+      // Make sure the render window stays within the bounds of the map
+      if (RenderBounds.X < 0)
+        RenderBounds.X = 0;
+      if (RenderBounds.X > BufferBounds.Width - RenderBounds.Width)
+        RenderBounds.X = BufferBounds.Width - RenderBounds.Width;
+      if (RenderBounds.Y < 0)
+        RenderBounds.Y = 0;
+      if (RenderBounds.Y > BufferBounds.Height - RenderBounds.Height)
+        RenderBounds.Y = BufferBounds.Height - RenderBounds.Height;
 
       // TODO: Item check, something to pick up?
 
