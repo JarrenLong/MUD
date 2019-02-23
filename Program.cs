@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace MUD
 {
@@ -7,9 +6,6 @@ namespace MUD
   {
     static void Main(string[] args)
     {
-      Console.CursorVisible = false;
-      Console.OutputEncoding = Encoding.ASCII;
-
       ConsoleWindow wnd = new ConsoleWindow()
       {
         WindowSize = new Rectangle(0, 0, 80, 40)
@@ -22,8 +18,7 @@ namespace MUD
       ConsoleKeyInfo key;
       do
       {
-        Console.Clear();
-        Console.Write(wnd.Print());
+        wnd.Print();
 
         key = Console.ReadKey(true);
 

@@ -11,7 +11,12 @@ namespace MUD
     public int Y { get; private set; }
     private char[,] OriginalMap;
 
-    public Map(ConsoleWindow wnd) : base(wnd) { }
+    public Map(ConsoleWindow wnd) : base(wnd)
+    {
+      var ws = wnd.WindowSize;
+
+      RenderBounds = new Rectangle(0, 0, ws.Width, (ws.Height / 4) * 3);
+    }
 
     public void Load(string mapFile)
     {
@@ -19,7 +24,6 @@ namespace MUD
         return;
 
       List<List<char>> map = new List<List<char>>();
-
 
       var lines = File.ReadAllLines(mapFile);
       foreach (var r in lines)
@@ -109,10 +113,14 @@ namespace MUD
         return;
       }
 
-      X = newX;
-      Y = newY;
+      // Move the render window for the scrolling effect
+      RenderBounds.X += newX - X;
+      RenderBounds.Y += newY - Y;
 
       // TODO: Item check, something to pick up?
+
+      X = newX;
+      Y = newY;
     }
   }
 }

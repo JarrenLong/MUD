@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MUD
 {
   public class ConsoleWindow
   {
+    public int TargetFPS { get; set; }
     public Rectangle WindowSize { get; set; }
     public List<RenderArea> Buffers { get; }
+    private char[,] lastRender = null;
 
     public ConsoleWindow()
     {
+      Console.CursorVisible = false;
+      Console.OutputEncoding = Encoding.ASCII;
+
+      TargetFPS = 30;
       WindowSize = new Rectangle(0, 0, 80, 40);
       Buffers = new List<RenderArea>();
     }
 
-    public string Print()
+    public void Print()
     {
       List<char[,]> data = new List<char[,]>();
 
@@ -28,29 +35,24 @@ namespace MUD
       int wndW = WindowSize.Width - WindowSize.X;
       int wndH = WindowSize.Height - WindowSize.Y;
       char[,] renderdata = new char[wndH, wndW];
+
       foreach (var dl in data)
-      {
         for (int y = 0; y < wndH; y++)
-        {
           for (int x = 0; x < wndW; x++)
-          {
-            var c = dl[y, x];
-            if (c != 0)
-              renderdata[y, x] = c;
-          }
-        }
-      }
+            if (dl[y, x] != 0)
+              renderdata[y, x] = dl[y, x];
 
       // Finally, print the composite to the console
-      string toPrint = "";
       for (int y = 0; y < wndH; y++)
-      {
         for (int x = 0; x < wndW; x++)
-          toPrint += renderdata[y, x];
-        toPrint += Environment.NewLine;
-      }
+          if (lastRender == null || lastRender[y, x] != renderdata[y, x])
+          {
+            Console.SetCursorPosition(x, y);
+            Console.Write(renderdata[y, x]);
+          }
 
-      return toPrint;
+      // Store a copy of what we just rendered for the next differential update
+      lastRender = renderdata;
     }
   }
 }

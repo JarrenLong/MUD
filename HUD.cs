@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MUD
+﻿namespace MUD
 {
   /// <summary>
   /// Head's-up display
@@ -32,7 +30,7 @@ namespace MUD
         for (int x = 0; x < BufferBounds.Width; x++)
         {
           if (x == 0 && y == 0)
-            Buffer[y, x]='*'; // Top left
+            Buffer[y, x] = '*'; // Top left
           else if (x == BufferBounds.Width - 1 && y == 0)
             Buffer[y, x] = '*'; // Top right
           else if (x == 0 && y == BufferBounds.Height - 1)
@@ -50,9 +48,6 @@ namespace MUD
             Buffer[y, x] = ' ';
           }
         }
-
-        //if (y < BufferBounds.Height - 1)
-        //  Buffer.AddRange(Environment.NewLine);
       }
 
       // TODO: Print this inside the box, account for wrapping
