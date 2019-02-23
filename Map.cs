@@ -108,24 +108,20 @@ namespace MUD
       }
 
       // Solid object check (can't walk through them)
-      foreach (Item it in wnd.Items)
+      Item it = wnd.Items[OriginalMap[newY, newX]];
+      if (it != null)
       {
-        if (OriginalMap[newY, newX] == it.RenderChar)
+        if (it.IsSolid)
         {
-          if (it.IsSolid)
-          {
-            //ShowMessage("That's a wall, and you're not Bobby.");
-            return;
-          }
-          else if (it.IsItem)
-          {
-            // TODO: Pick up the item and do womething with it
+          //ShowMessage("That's a wall, and you're not Bobby.");
+          return;
+        }
+        else if (it.IsItem)
+        {
+          // TODO: Pick up the item and do something with it
 
-            // Remove the item from the original map
-            OriginalMap[newY, newX] = ' ';
-          }
-
-          break;
+          // Remove the item from the original map
+          OriginalMap[newY, newX] = ' ';
         }
       }
 

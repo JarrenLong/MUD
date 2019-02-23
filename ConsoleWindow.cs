@@ -11,7 +11,7 @@ namespace MUD
     public Rectangle WindowSize { get; set; }
     public List<RenderArea> Buffers { get; }
     private char[,] lastRender = null;
-    public List<Item> Items { get; }
+    public Dictionary<char, Item> Items { get; }
 
     public ConsoleWindow()
     {
@@ -21,7 +21,7 @@ namespace MUD
       TargetFPS = 30;
       WindowSize = new Rectangle(0, 0, 80, 40);
       Buffers = new List<RenderArea>();
-      Items = new List<Item>();
+      Items = new Dictionary<char, Item>();
     }
 
     public void LoadItems(string itemFile)
@@ -30,8 +30,17 @@ namespace MUD
         return;
 
       string[] lines = File.ReadAllLines(itemFile);
+      Item buf = null;
       foreach (string r in lines)
-        Items.Add(new Item(r));
+      {
+        buf = new Item(r);
+        Items.Add(buf.RenderChar, buf);
+      }
+
+      // Fill in the rest of the item map with blanks
+      for (int i = 0; i < 256; i++)
+        if (!Items.ContainsKey((char)i))
+          Items.Add((char)i, new Item((char)i + "|"));
     }
 
     public void Print()
@@ -56,20 +65,13 @@ namespace MUD
               renderdata[y, x] = dl[y, x];
 
       // Finally, print the composite to the console
+      Item it = null;
       for (int y = 0; y < wndH; y++)
         for (int x = 0; x < wndW; x++)
           if (lastRender == null || lastRender[y, x] != renderdata[y, x])
           {
-            Item it = null;
-            foreach (Item i in Items)
-            {
-              if (i.RenderChar == renderdata[y, x])
-              {
-                it = i;
-                break;
-              }
-            }
-
+            it = Items[renderdata[y, x]];
+            
             Console.SetCursorPosition(x, y);
             if (it != null)
             {
