@@ -9,7 +9,6 @@ namespace MUD
     public int X { get; private set; }
     public int Y { get; private set; }
     private char[,] OriginalMap;
-    private List<Item> Items = new List<Item>();
 
     public Map(ConsoleWindow wnd) : base(wnd)
     {
@@ -20,9 +19,8 @@ namespace MUD
       RenderOrder = 0;
     }
 
-    public void Load(string mapFile, string itemFile)
+    public void Load(string mapFile)
     {
-      #region Load World Map
       if (!File.Exists(mapFile))
         return;
 
@@ -63,19 +61,6 @@ namespace MUD
         }
         rr++;
       }
-
-      #endregion
-
-      #region Load Item Map
-
-      if (!File.Exists(itemFile))
-        return;
-
-      lines = File.ReadAllLines(itemFile);
-      foreach (string r in lines)
-        Items.Add(new Item(r));
-
-      #endregion
     }
 
     public override void Update()
@@ -95,7 +80,7 @@ namespace MUD
       Right
     }
 
-    public void Move(Direction dir)
+    public void Move(ConsoleWindow wnd, Direction dir)
     {
       int newX = X, newY = Y;
 
@@ -123,7 +108,7 @@ namespace MUD
       }
 
       // Solid object check (can't walk through them)
-      foreach (Item it in Items)
+      foreach (Item it in wnd.Items)
       {
         if (OriginalMap[newY, newX] == it.RenderChar)
         {

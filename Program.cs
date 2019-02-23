@@ -10,9 +10,10 @@ namespace MUD
       {
         WindowSize = new Rectangle(0, 0, 80, 40)
       };
+      wnd.LoadItems(".\\maps\\test.items");
 
       Map map = new Map(wnd);
-      map.Load(".\\maps\\test.map", ".\\maps\\test.items");
+      map.Load(".\\maps\\test.map");
       HUD hud = new HUD(wnd);
 
       ConsoleKeyInfo key;
@@ -25,16 +26,16 @@ namespace MUD
         switch (key.Key)
         {
           case ConsoleKey.UpArrow:
-            map.Move(Map.Direction.Up);
+            map.Move(wnd, Map.Direction.Up);
             break;
           case ConsoleKey.DownArrow:
-            map.Move(Map.Direction.Down);
+            map.Move(wnd, Map.Direction.Down);
             break;
           case ConsoleKey.LeftArrow:
-            map.Move(Map.Direction.Left);
+            map.Move(wnd, Map.Direction.Left);
             break;
           case ConsoleKey.RightArrow:
-            map.Move(Map.Direction.Right);
+            map.Move(wnd, Map.Direction.Right);
             break;
           case ConsoleKey.Escape:
             hud.ShowMessage("Closing ...");

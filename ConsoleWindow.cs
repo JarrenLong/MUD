@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace MUD
@@ -10,6 +11,7 @@ namespace MUD
     public Rectangle WindowSize { get; set; }
     public List<RenderArea> Buffers { get; }
     private char[,] lastRender = null;
+    public List<Item> Items { get; }
 
     public ConsoleWindow()
     {
@@ -19,6 +21,17 @@ namespace MUD
       TargetFPS = 30;
       WindowSize = new Rectangle(0, 0, 80, 40);
       Buffers = new List<RenderArea>();
+      Items = new List<Item>();
+    }
+
+    public void LoadItems(string itemFile)
+    {
+      if (!File.Exists(itemFile))
+        return;
+
+      string[] lines = File.ReadAllLines(itemFile);
+      foreach (string r in lines)
+        Items.Add(new Item(r));
     }
 
     public void Print()
@@ -47,7 +60,22 @@ namespace MUD
         for (int x = 0; x < wndW; x++)
           if (lastRender == null || lastRender[y, x] != renderdata[y, x])
           {
+            Item it = null;
+            foreach (Item i in Items)
+            {
+              if (i.RenderChar == renderdata[y, x])
+              {
+                it = i;
+                break;
+              }
+            }
+
             Console.SetCursorPosition(x, y);
+            if (it != null)
+            {
+              Console.BackgroundColor = (ConsoleColor)it.BackgroundColor;
+              Console.ForegroundColor = (ConsoleColor)it.ForegroundColor;
+            }
             Console.Write(renderdata[y, x]);
           }
 
