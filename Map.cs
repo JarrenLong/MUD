@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace MUD
@@ -13,9 +12,11 @@ namespace MUD
 
     public Map(ConsoleWindow wnd) : base(wnd)
     {
-      var ws = wnd.WindowSize;
+      Rectangle ws = wnd.WindowSize;
 
       RenderBounds = new Rectangle(0, 0, ws.Width, (ws.Height / 4) * 3);
+
+      RenderOrder = 0;
     }
 
     public void Load(string mapFile)
@@ -25,11 +26,11 @@ namespace MUD
 
       List<List<char>> map = new List<List<char>>();
 
-      var lines = File.ReadAllLines(mapFile);
-      foreach (var r in lines)
+      string[] lines = File.ReadAllLines(mapFile);
+      foreach (string r in lines)
       {
         List<char> buf = new List<char>();
-        foreach (var c in r)
+        foreach (char c in r)
           buf.Add(c);
         map.Add(buf);
 
@@ -41,10 +42,10 @@ namespace MUD
       OriginalMap = new char[BufferBounds.Height, BufferBounds.Width];
 
       int rr = 0, cc = 0;
-      foreach (var h in map)
+      foreach (List<char> h in map)
       {
         cc = 0;
-        foreach (var w in h)
+        foreach (char w in h)
         {
           OriginalMap[rr, cc] = w;
 

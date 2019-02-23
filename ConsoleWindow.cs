@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace MUD
@@ -27,8 +26,9 @@ namespace MUD
       List<char[,]> data = new List<char[,]>();
 
       // Print all of the render areas in order
-      var buffers = Buffers.OrderBy(x => x.RenderOrder);
-      foreach (var b in buffers)
+      Buffers.Sort((x, y) => x.RenderOrder.CompareTo(y.RenderOrder));
+
+      foreach (RenderArea b in Buffers)
         data.Add(b.Print(this));
 
       // Now, we'll overlay them in the order that they need to be rendered
@@ -36,7 +36,7 @@ namespace MUD
       int wndH = WindowSize.Height - WindowSize.Y;
       char[,] renderdata = new char[wndH, wndW];
 
-      foreach (var dl in data)
+      foreach (char[,] dl in data)
         for (int y = 0; y < wndH; y++)
           for (int x = 0; x < wndW; x++)
             if (dl[y, x] != 0)

@@ -9,11 +9,13 @@
 
     public HUD(ConsoleWindow wnd) : base(wnd)
     {
-      var ws = wnd.WindowSize;
+      Rectangle ws = wnd.WindowSize;
 
       BufferBounds = new Rectangle(0, 0, ws.Width, ws.Height / 4);
       RenderBounds = BufferBounds;
       WindowOffset = new Rectangle(0, (ws.Height / 4) * 3, ws.Width, ws.Height / 4);
+
+      RenderOrder = 1;
     }
 
     public void ShowMessage(string msg)

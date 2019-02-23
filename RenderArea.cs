@@ -13,7 +13,7 @@
 
     public RenderArea(ConsoleWindow wnd)
     {
-      var ws = wnd.WindowSize;
+      Rectangle ws = wnd.WindowSize;
 
       BufferBounds = new Rectangle(0, 0, ws.Width, ws.Height);
       RenderBounds = new Rectangle(0, 0, ws.Width, ws.Height);
