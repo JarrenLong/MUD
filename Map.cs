@@ -9,6 +9,7 @@ namespace MUD
     public int X { get; private set; }
     public int Y { get; private set; }
     private char[,] OriginalMap;
+    private List<Item> Items = new List<Item>();
 
     public Map(ConsoleWindow wnd) : base(wnd)
     {
@@ -19,8 +20,9 @@ namespace MUD
       RenderOrder = 0;
     }
 
-    public void Load(string mapFile)
+    public void Load(string mapFile, string itemFile)
     {
+      #region Load World Map
       if (!File.Exists(mapFile))
         return;
 
@@ -61,6 +63,19 @@ namespace MUD
         }
         rr++;
       }
+
+      #endregion
+
+      #region Load Item Map
+
+      if (!File.Exists(itemFile))
+        return;
+
+      lines = File.ReadAllLines(itemFile);
+      foreach (string r in lines)
+        Items.Add(new Item(r));
+
+      #endregion
     }
 
     public override void Update()
@@ -108,10 +123,25 @@ namespace MUD
       }
 
       // Solid object check (can't walk through them)
-      if (OriginalMap[newY, newX] == '#')
+      foreach (Item it in Items)
       {
-        //ShowMessage("That's a wall, and you're not Bobby.");
-        return;
+        if (OriginalMap[newY, newX] == it.RenderChar)
+        {
+          if (it.IsSolid)
+          {
+            //ShowMessage("That's a wall, and you're not Bobby.");
+            return;
+          }
+          else if (it.IsItem)
+          {
+            // TODO: Pick up the item and do womething with it
+
+            // Remove the item from the original map
+            OriginalMap[newY, newX] = ' ';
+          }
+
+          break;
+        }
       }
 
       // Move the render window for the scrolling effect
@@ -129,8 +159,6 @@ namespace MUD
         RenderBounds.Y = 0;
       if (RenderBounds.Y > BufferBounds.Height - RenderBounds.Height)
         RenderBounds.Y = BufferBounds.Height - RenderBounds.Height;
-
-      // TODO: Item check, something to pick up?
 
       X = newX;
       Y = newY;

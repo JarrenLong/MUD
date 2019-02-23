@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="HUD.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +51,9 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="maps\test.items">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="maps\test.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

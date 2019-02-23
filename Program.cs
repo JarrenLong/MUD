@@ -12,7 +12,7 @@ namespace MUD
       };
 
       Map map = new Map(wnd);
-      map.Load(".\\maps\\test.map");
+      map.Load(".\\maps\\test.map", ".\\maps\\test.items");
       HUD hud = new HUD(wnd);
 
       ConsoleKeyInfo key;
