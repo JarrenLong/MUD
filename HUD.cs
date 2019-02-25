@@ -76,7 +76,6 @@ namespace MUD
       }
 
       // Show messages if any are available
-      // TODO: Account for multiline messages with scrolling text
       if (!string.IsNullOrEmpty(Message))
       {
         int y = 1;
@@ -108,7 +107,7 @@ namespace MUD
           y++;
         } while (y < BufferBounds.Height - 2);
 
-        // If we still have more nessage to show, show a down arrow indicator in the bottom right corner of the HUD.
+        // If we still have more message to show, show an indicator in the bottom right corner of the HUD.
         if (!string.IsNullOrEmpty(Message))
           Buffer[BufferBounds.Height - 3, BufferBounds.Width - 2] = '~';
       }
