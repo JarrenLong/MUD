@@ -1,9 +1,14 @@
 ﻿namespace MUD
 {
+  public interface IHeadsUpDisplay
+  {
+    void ShowMessage(string msg);
+  }
+
   /// <summary>
   /// Head's-up display
   /// </summary>
-  public class HUD : RenderArea
+  public class HUD : RenderArea, IHeadsUpDisplay
   {
     private string Message = "";
 
@@ -16,11 +21,13 @@
       WindowOffset = new Rectangle(0, (ws.Height / 4) * 3, ws.Width, ws.Height / 4);
 
       RenderOrder = 1;
+
+      Window.HUD = this;
     }
 
     public void ShowMessage(string msg)
     {
-      Message = "";
+      Message = msg;
     }
 
     public override void Update()
@@ -52,9 +59,37 @@
         }
       }
 
-      // TODO: Print this inside the box, account for wrapping
+      // Print this inside the box
+      // TODO: Account for multiline messages with scrolling text
+      if (!string.IsNullOrEmpty(Message))
+      {
+        string msg = Message;
+        int len = msg.Length;
+        if (len >= BufferBounds.Width - 4)
+        {
+          msg = msg.Substring(0, BufferBounds.Width - 4);
+          len = msg.Length;
+        }
+
+        int leftPad = (BufferBounds.Width - (BufferBounds.Width - 4 - len)) / 2;
+        int i = 0;
+        for (int y = 0; y < len + leftPad; y++)
+        {
+          if (y != 0 && y != BufferBounds.Width && y < leftPad)
+            Buffer[1, y] = ' ';
+
+          if (y >= leftPad)
+          {
+            Buffer[1, y] = msg[i];
+            i++;
+          }
+        }
+
+        Message = Message.Substring(len);
+      }
+
       //Buffer.AddRange(Message);
-      Message = "";
+      //Message = "";
     }
   }
 }

@@ -74,7 +74,7 @@ namespace MUD
       // Bounds check
       if (newX < 0 || newX >= BufferBounds.Width || newY < 0 || newY >= BufferBounds.Height)
       {
-        //ShowMessage("You can't move that direction!");
+        Window.HUD.ShowMessage("You can't move that direction!");
         return;
       }
 
@@ -84,7 +84,7 @@ namespace MUD
       {
         if (it.IsSolid)
         {
-          //ShowMessage("That's a wall, and you're not Bobby.");
+          Window.HUD.ShowMessage("That's a wall, and you're not Bobby.");
           return;
         }
         else if (it.IsItem)

@@ -14,6 +14,7 @@ namespace MUD
     public Dictionary<char, Item> Items { get; }
     public IMap Map { get; set; }
     public IPlayer Player { get; set; }
+    public IHeadsUpDisplay HUD { get; set; }
 
     public ConsoleWindow()
     {
