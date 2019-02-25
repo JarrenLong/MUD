@@ -6,7 +6,7 @@ namespace MUD
   {
     int X { get; set; }
     int Y { get; set; }
-    List<Item> Inventory { get; }
+    List<InventoryItem> Inventory { get; }
   }
 
   public class Player : RenderArea, IPlayer
@@ -19,7 +19,7 @@ namespace MUD
     public int Health { get; set; }
     public int Power { get; set; }
     public int Money { get; set; }
-    public List<Item> Inventory { get; }
+    public List<InventoryItem> Inventory { get; }
 
     public Player(ConsoleWindow wnd) : base(wnd)
     {
@@ -31,7 +31,7 @@ namespace MUD
       Health = 100;
       Power = 100;
       Money = 50;
-      Inventory = new List<Item>();
+      Inventory = new List<InventoryItem>();
 
       Window.Player = this;
     }
@@ -91,7 +91,19 @@ namespace MUD
         else if (it.IsItem)
         {
           // Pick up the item and do something with it
-          Inventory.Add(it);
+          bool found = false;
+          foreach (InventoryItem pi in Inventory)
+          {
+            if (pi.RenderChar == it.RenderChar)
+            {
+              pi.Quantity++;
+              found = true;
+              break;
+            }
+          }
+
+          if (!found)
+            Inventory.Add(new InventoryItem(it) { Quantity = 1 });
 
           // Remove the item from the original map
           Window.Map.OriginalMap[newY, newX] = ' ';

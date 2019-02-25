@@ -52,6 +52,8 @@ namespace MUD
     public bool IsItem { get; set; } = false;
     public int DamageItCauses { get; set; } = 0;
 
+    public Item() { }
+
     public Item(string definition)
     {
       // Line Format: [char]|[name]|[isSolid (0|1)]|[isItem (0|1)]|[bgColor]|[fgColor]|[damageItCauses (-100 to +100)]
@@ -70,6 +72,27 @@ namespace MUD
         ForegroundColor = int.Parse(vals[4]);
       if (vals.Length > 5)
         DamageItCauses = int.Parse(vals[5]);
+    }
+  }
+
+  public class InventoryItem : Item
+  {
+    public int Quantity { get; set; }
+
+    public InventoryItem(string definition) : base(definition)
+    {
+      Quantity = 0;
+    }
+    public InventoryItem(Item it)
+    {
+      RenderChar = it.RenderChar;
+      Name = it.Name;
+      IsSolid = it.IsSolid;
+      IsItem = it.IsItem;
+      BackgroundColor = it.BackgroundColor;
+      ForegroundColor = it.ForegroundColor;
+      DamageItCauses = it.DamageItCauses;
+      Quantity = 0;
     }
   }
 }

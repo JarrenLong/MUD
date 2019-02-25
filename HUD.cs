@@ -65,16 +65,14 @@ namespace MUD
 
       if (ShowingInventory)
       {
-        List<Item> inv = Window.Player.Inventory;
+        List<InventoryItem> inv = Window.Player.Inventory;
         if (inv == null || inv.Count == 0)
           Message = "You don't have anything in your inventory!";
         else
           Message = "";
 
-        foreach (Item it in inv)
-        {
-          Message += it.RenderChar + " - " + it.Name + "\r\n";
-        }
+        foreach (InventoryItem it in inv)
+          Message += string.Format("{0} -  {1} ({2})\r\n", it.RenderChar, it.Name, it.Quantity);
       }
 
       // Show messages if any are available
