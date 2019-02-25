@@ -9,6 +9,7 @@ namespace MUD
       int wndX = 80, wndY = 40;
       string itemFile = ".\\maps\\test.items", mapFile = ".\\maps\\test.map";
 
+      #region Command-line arguments
       if (args != null && args.Length > 0)
       {
         string argBuf = "";
@@ -62,6 +63,7 @@ namespace MUD
           }
         }
       }
+      #endregion
 
       ConsoleWindow wnd = new ConsoleWindow()
       {
@@ -72,6 +74,7 @@ namespace MUD
       Map map = new Map(wnd);
       map.Load(mapFile);
       HUD hud = new HUD(wnd);
+      Player player = new Player(wnd);
 
       ConsoleKeyInfo key;
       do
