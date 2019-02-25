@@ -76,6 +76,8 @@ namespace MUD
       map.Load(mapFile);
       HUD hud = new HUD(wnd);
 
+      hud.ShowMessage("Hello " + player.Name + "! Use the arrow keys to move around.");
+
       ConsoleKeyInfo key;
       do
       {

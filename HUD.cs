@@ -71,14 +71,14 @@
           len = msg.Length;
         }
 
-        int leftPad = (BufferBounds.Width - (BufferBounds.Width - 4 - len)) / 2;
+        int leftPad = (BufferBounds.Width - 4 - len) / 2;
         int i = 0;
         for (int y = 0; y < len + leftPad; y++)
         {
           if (y != 0 && y != BufferBounds.Width && y < leftPad)
             Buffer[1, y] = ' ';
 
-          if (y >= leftPad)
+          if (y >= leftPad && y < BufferBounds.Width)
           {
             Buffer[1, y] = msg[i];
             i++;

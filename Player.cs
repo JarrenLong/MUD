@@ -89,14 +89,13 @@ namespace MUD
         }
         else if (it.IsItem)
         {
-          // TODO: Pick up the item and do something with it
+          // Pick up the item and do something with it
+          Inventory.Add(it);
 
           // Remove the item from the original map
           Window.Map.OriginalMap[newY, newX] = ' ';
         }
       }
-
-      // Move the render window for the scrolling effect
 
       // Keep the render window centered on the player if possible
       RenderBounds.X = newX - (RenderBounds.Width / 2);
@@ -112,6 +111,7 @@ namespace MUD
       if (RenderBounds.Y > BufferBounds.Height - RenderBounds.Height)
         RenderBounds.Y = BufferBounds.Height - RenderBounds.Height;
 
+      // Store the player's new position
       X = newX;
       Y = newY;
     }
