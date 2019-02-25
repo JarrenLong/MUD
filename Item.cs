@@ -1,14 +1,56 @@
-﻿namespace MUD
+﻿using System.Collections.Generic;
+
+namespace MUD
 {
-  public class Item
+  public class PrintChar
   {
     public char RenderChar { get; set; } = (char)0;
+    public int BackgroundColor { get; set; } = 0;
+    public int ForegroundColor { get; set; } = 15;
+
+    public PrintChar() { }
+    public PrintChar(char c)
+    {
+      RenderChar = c;
+    }
+  }
+
+  public class PrintCharString
+  {
+    public List<PrintChar> String { get; }
+    public PrintCharString()
+    {
+      String = new List<PrintChar>();
+    }
+    public PrintCharString(string msg)
+    {
+      String = new List<PrintChar>();
+
+      if (!string.IsNullOrEmpty(msg))
+        foreach (char c in msg)
+          String.Add(new PrintChar() { RenderChar = c });
+    }
+
+    public void Print()
+    {
+
+    }
+
+    public override string ToString()
+    {
+      string ret = "";
+      foreach (PrintChar pc in String)
+        ret += pc.RenderChar;
+      return ret;
+    }
+  }
+
+  public class Item : PrintChar
+  {
     public string Name { get; set; } = "";
     public bool IsSolid { get; set; } = false;
     public bool IsItem { get; set; } = false;
     public int DamageItCauses { get; set; } = 0;
-    public int BackgroundColor { get; set; } = 0;
-    public int ForegroundColor { get; set; } = 15;
 
     public Item(string definition)
     {
