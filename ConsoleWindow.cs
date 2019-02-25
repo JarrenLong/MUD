@@ -12,6 +12,8 @@ namespace MUD
     public List<RenderArea> Buffers { get; }
     private char[,] lastRender = null;
     public Dictionary<char, Item> Items { get; }
+    public IMap Map { get; set; }
+    public IPlayer Player { get; set; }
 
     public ConsoleWindow()
     {
@@ -50,8 +52,13 @@ namespace MUD
       // Print all of the render areas in order
       Buffers.Sort((x, y) => x.RenderOrder.CompareTo(y.RenderOrder));
 
+      char[,] raBuf = null;
       foreach (RenderArea b in Buffers)
-        data.Add(b.Print(this));
+      {
+        raBuf = b.Print();
+        if (b.IsVisibleArea)
+          data.Add(raBuf);
+      }
 
       // Now, we'll overlay them in the order that they need to be rendered
       int wndW = WindowSize.Width - WindowSize.X;

@@ -9,7 +9,7 @@
 
     public HUD(ConsoleWindow wnd) : base(wnd)
     {
-      Rectangle ws = wnd.WindowSize;
+      Rectangle ws = Window.WindowSize;
 
       BufferBounds = new Rectangle(0, 0, ws.Width, ws.Height / 4);
       RenderBounds = BufferBounds;

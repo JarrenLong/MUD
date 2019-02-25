@@ -71,10 +71,10 @@ namespace MUD
       };
       wnd.LoadItems(itemFile);
 
+      Player player = new Player(wnd);
       Map map = new Map(wnd);
       map.Load(mapFile);
       HUD hud = new HUD(wnd);
-      Player player = new Player(wnd);
 
       ConsoleKeyInfo key;
       do
@@ -86,16 +86,16 @@ namespace MUD
         switch (key.Key)
         {
           case ConsoleKey.UpArrow:
-            map.Move(wnd, Map.Direction.Up);
+            player.Move(Player.Direction.Up);
             break;
           case ConsoleKey.DownArrow:
-            map.Move(wnd, Map.Direction.Down);
+            player.Move(Player.Direction.Down);
             break;
           case ConsoleKey.LeftArrow:
-            map.Move(wnd, Map.Direction.Left);
+            player.Move(Player.Direction.Left);
             break;
           case ConsoleKey.RightArrow:
-            map.Move(wnd, Map.Direction.Right);
+            player.Move(Player.Direction.Right);
             break;
           case ConsoleKey.Escape:
             hud.ShowMessage("Closing ...");

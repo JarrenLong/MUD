@@ -3,6 +3,7 @@
   public class RenderArea
   {
     public int RenderOrder { get; set; }
+    public bool IsVisibleArea { get; set; }
     public bool Scrollable { get; set; }
     public int ScrollCenterX { get; set; }
     public int ScrollCenterY { get; set; }
@@ -10,19 +11,23 @@
     public Rectangle RenderBounds { get; set; }
     public Rectangle WindowOffset { get; set; }
     public char[,] Buffer { get; set; }
+    public ConsoleWindow Window { get; private set; }
 
     public RenderArea(ConsoleWindow wnd)
     {
-      Rectangle ws = wnd.WindowSize;
+      Window = wnd;
 
+      Rectangle ws = Window.WindowSize;
+
+      IsVisibleArea = true;
       BufferBounds = new Rectangle(0, 0, ws.Width, ws.Height);
       RenderBounds = new Rectangle(0, 0, ws.Width, ws.Height);
       WindowOffset = new Rectangle(0, 0, ws.Width, ws.Height);
 
-      wnd.Buffers.Add(this);
+      Window.Buffers.Add(this);
     }
 
-    public char[,] Print(ConsoleWindow wnd)
+    public char[,] Print()
     {
       // Update the buffer for this render area
       Update();
@@ -31,7 +36,7 @@
       char[,] toPrint = GetRegion(Buffer, BufferBounds, RenderBounds);
 
       // Now, the render area needs to be translated into a buffer the same size as the window
-      toPrint = SetRegion(toPrint, RenderBounds, wnd.WindowSize, WindowOffset);
+      toPrint = SetRegion(toPrint, RenderBounds, Window.WindowSize, WindowOffset);
 
       // return the formatted area to print
       return toPrint;
@@ -42,6 +47,9 @@
     public static char[,] GetRegion(char[,] orig, Rectangle origBounds, Rectangle regionToGet)
     {
       char[,] ret = new char[regionToGet.Height, regionToGet.Width];
+
+      if (orig == null)
+        return ret;
 
       int xOffset = origBounds.X - regionToGet.X;
       int yOffset = origBounds.Y - regionToGet.Y;

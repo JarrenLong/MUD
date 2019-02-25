@@ -3,20 +3,24 @@ using System.IO;
 
 namespace MUD
 {
-  public class Map : RenderArea
+  public interface IMap
   {
-    public const char Character = 'X';
-    public int X { get; private set; }
-    public int Y { get; private set; }
-    private char[,] OriginalMap;
+    char[,] OriginalMap { get; set; }
+  }
+
+  public class Map : RenderArea, IMap
+  {
+    public char[,] OriginalMap { get; set; }
 
     public Map(ConsoleWindow wnd) : base(wnd)
     {
-      Rectangle ws = wnd.WindowSize;
+      Rectangle ws = Window.WindowSize;
 
       RenderBounds = new Rectangle(0, 0, ws.Width, (ws.Height / 4) * 3);
 
       RenderOrder = 0;
+
+      wnd.Map = this;
     }
 
     public void Load(string mapFile)
@@ -50,10 +54,10 @@ namespace MUD
           OriginalMap[rr, cc] = w;
 
           // Start character position
-          if (w == Character)
+          if (w == Player.Character)
           {
-            X = cc;
-            Y = rr;
+            Window.Player.X = cc;
+            Window.Player.Y = rr;
             OriginalMap[rr, cc] = ' ';
           }
 
@@ -67,82 +71,6 @@ namespace MUD
     {
       // Create a full copy of the map
       Buffer = SetRegion(OriginalMap, BufferBounds, BufferBounds, BufferBounds);
-
-      // Set the player position
-      Buffer[Y, X] = Character;
-    }
-
-    public enum Direction
-    {
-      Up,
-      Down,
-      Left,
-      Right
-    }
-
-    public void Move(ConsoleWindow wnd, Direction dir)
-    {
-      int newX = X, newY = Y;
-
-      switch (dir)
-      {
-        case Direction.Up:
-          newY--;
-          break;
-        case Direction.Down:
-          newY++;
-          break;
-        case Direction.Left:
-          newX--;
-          break;
-        case Direction.Right:
-          newX++;
-          break;
-      }
-
-      // Bounds check
-      if (newX < 0 || newX >= BufferBounds.Width || newY < 0 || newY >= BufferBounds.Height)
-      {
-        //ShowMessage("You can't move that direction!");
-        return;
-      }
-
-      // Solid object check (can't walk through them)
-      Item it = wnd.Items[OriginalMap[newY, newX]];
-      if (it != null)
-      {
-        if (it.IsSolid)
-        {
-          //ShowMessage("That's a wall, and you're not Bobby.");
-          return;
-        }
-        else if (it.IsItem)
-        {
-          // TODO: Pick up the item and do something with it
-
-          // Remove the item from the original map
-          OriginalMap[newY, newX] = ' ';
-        }
-      }
-
-      // Move the render window for the scrolling effect
-
-      // Keep the render window centered on the player if possible
-      RenderBounds.X = newX - (RenderBounds.Width / 2);
-      RenderBounds.Y = newY - (RenderBounds.Height / 2);
-
-      // Make sure the render window stays within the bounds of the map
-      if (RenderBounds.X < 0)
-        RenderBounds.X = 0;
-      if (RenderBounds.X > BufferBounds.Width - RenderBounds.Width)
-        RenderBounds.X = BufferBounds.Width - RenderBounds.Width;
-      if (RenderBounds.Y < 0)
-        RenderBounds.Y = 0;
-      if (RenderBounds.Y > BufferBounds.Height - RenderBounds.Height)
-        RenderBounds.Y = BufferBounds.Height - RenderBounds.Height;
-
-      X = newX;
-      Y = newY;
     }
   }
 }
