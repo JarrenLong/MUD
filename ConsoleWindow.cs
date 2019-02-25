@@ -27,6 +27,11 @@ namespace MUD
       Items = new Dictionary<char, Item>();
     }
 
+    public void ResizeWindow()
+    {
+      Console.SetWindowSize(WindowSize.Width, WindowSize.Height);
+    }
+
     public void LoadItems(string itemFile)
     {
       if (!File.Exists(itemFile))

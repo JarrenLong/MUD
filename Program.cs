@@ -69,6 +69,7 @@ namespace MUD
       {
         WindowSize = new Rectangle(0, 0, wndX, wndY)
       };
+      wnd.ResizeWindow();
       wnd.LoadItems(itemFile);
 
       Player player = new Player(wnd);
@@ -105,9 +106,9 @@ namespace MUD
           case ConsoleKey.I:
             hud.ToggleInventory();
             break;
-          //default:
-          //  hud.ShowMessage("Unknown key!");
-          //  break;
+            //default:
+            //  hud.ShowMessage("Unknown key!");
+            //  break;
         }
       } while (key.Key != ConsoleKey.Escape);
     }
