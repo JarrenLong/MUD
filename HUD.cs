@@ -51,11 +51,7 @@
           else if (x == 0 || x == BufferBounds.Width - 1)
             Buffer[y, x] = '|'; // Left or right of area
           else
-          {
-            // Body area
-            // TODO: render HUD in here
-            Buffer[y, x] = ' ';
-          }
+            Buffer[y, x] = ' '; // Body area
         }
       }
 
@@ -63,33 +59,35 @@
       // TODO: Account for multiline messages with scrolling text
       if (!string.IsNullOrEmpty(Message))
       {
-        string msg = Message;
-        int len = msg.Length;
-        if (len >= BufferBounds.Width - 4)
+        int y = 1;
+        do
         {
-          msg = msg.Substring(0, BufferBounds.Width - 4);
-          len = msg.Length;
-        }
-
-        int leftPad = (BufferBounds.Width - 4 - len) / 2;
-        int i = 0;
-        for (int y = 0; y < len + leftPad; y++)
-        {
-          if (y != 0 && y != BufferBounds.Width && y < leftPad)
-            Buffer[1, y] = ' ';
-
-          if (y >= leftPad && y < BufferBounds.Width)
+          string msg = Message;
+          int len = msg.Length;
+          if (len >= BufferBounds.Width - 4)
           {
-            Buffer[1, y] = msg[i];
-            i++;
+            msg = msg.Substring(0, BufferBounds.Width - 4);
+            len = msg.Length;
           }
-        }
 
-        Message = Message.Substring(len);
+          int leftPad = (BufferBounds.Width - 4 - len) / 2 + 1;
+          int i = 0;
+          for (int x = 1; x <= len + leftPad; x++)
+          {
+            if (x != 0 && x != BufferBounds.Width && x <= leftPad)
+              Buffer[y, x] = ' ';
+
+            if (x > leftPad && x < BufferBounds.Width)
+            {
+              Buffer[y, x] = msg[i];
+              i++;
+            }
+          }
+
+          Message = Message.Substring(len);
+          y++;
+        } while (y < BufferBounds.Height - 2);
       }
-
-      //Buffer.AddRange(Message);
-      //Message = "";
     }
   }
 }
