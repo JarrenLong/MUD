@@ -6,6 +6,7 @@ namespace MUD
   {
     int X { get; set; }
     int Y { get; set; }
+    List<Item> Inventory { get; }
   }
 
   public class Player : RenderArea, IPlayer
@@ -18,7 +19,7 @@ namespace MUD
     public int Health { get; set; }
     public int Power { get; set; }
     public int Money { get; set; }
-    public List<Item> Inventory { get; set; }
+    public List<Item> Inventory { get; }
 
     public Player(ConsoleWindow wnd) : base(wnd)
     {

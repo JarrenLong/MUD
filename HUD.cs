@@ -1,4 +1,6 @@
-﻿namespace MUD
+﻿using System.Collections.Generic;
+
+namespace MUD
 {
   public interface IHeadsUpDisplay
   {
@@ -11,6 +13,7 @@
   public class HUD : RenderArea, IHeadsUpDisplay
   {
     private string Message = "";
+    private bool ShowingInventory = false;
 
     public HUD(ConsoleWindow wnd) : base(wnd)
     {
@@ -28,6 +31,11 @@
     public void ShowMessage(string msg)
     {
       Message = msg;
+    }
+
+    public void ToggleInventory()
+    {
+      ShowingInventory = !ShowingInventory;
     }
 
     public override void Update()
@@ -55,7 +63,21 @@
         }
       }
 
-      // Print this inside the box
+      if (ShowingInventory)
+      {
+        List<Item> inv = Window.Player.Inventory;
+        if (inv == null || inv.Count == 0)
+          Message = "You don't have anything in your inventory!";
+        else
+          Message = "";
+
+        foreach (Item it in inv)
+        {
+          Message += it.RenderChar + " - " + it.Name + "\r\n";
+        }
+      }
+
+      // Show messages if any are available
       // TODO: Account for multiline messages with scrolling text
       if (!string.IsNullOrEmpty(Message))
       {

@@ -102,6 +102,9 @@ namespace MUD
           case ConsoleKey.Escape:
             hud.ShowMessage("Closing ...");
             break;
+          case ConsoleKey.I:
+            hud.ToggleInventory();
+            break;
           default:
             hud.ShowMessage("Unknown key!");
             break;
