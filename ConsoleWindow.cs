@@ -70,9 +70,14 @@ namespace MUD
         for (int x = 0; x < wndW; x++)
           if (lastRender == null || lastRender[y, x] != renderdata[y, x])
           {
-            it = Items[renderdata[y, x]];
-            
+            try
+            {
+              it = Items[renderdata[y, x]];
+            }
+            catch { it = null; }
+
             Console.SetCursorPosition(x, y);
+
             if (it != null)
             {
               Console.BackgroundColor = (ConsoleColor)it.BackgroundColor;

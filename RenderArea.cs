@@ -60,6 +60,9 @@
     {
       char[,] ret = new char[newBounds.Height - newBounds.Y, newBounds.Width - newBounds.X];
 
+      if (orig == null)
+        return ret;
+
       for (int y = 0; y < origBounds.Height; y++)
         for (int x = 0; x < origBounds.Width; x++)
           ret[y + offset.Y, x + offset.X] = orig[y, x];
