@@ -90,7 +90,7 @@ namespace MUD
         }
         else if (it.IsItem)
         {
-          // Pick up the item and do something with it
+          // Pick up the item and add it to the player's inventory
           bool found = false;
           foreach (InventoryItem pi in Inventory)
           {

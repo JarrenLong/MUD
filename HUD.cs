@@ -107,6 +107,10 @@ namespace MUD
           Message = Message.Substring(len);
           y++;
         } while (y < BufferBounds.Height - 2);
+
+        // If we still have more nessage to show, show a down arrow indicator in the bottom right corner of the HUD.
+        if (!string.IsNullOrEmpty(Message))
+          Buffer[BufferBounds.Height - 3, BufferBounds.Width - 2] = '~';
       }
     }
   }

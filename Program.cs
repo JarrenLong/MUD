@@ -76,7 +76,7 @@ namespace MUD
       map.Load(mapFile);
       HUD hud = new HUD(wnd);
 
-      hud.ShowMessage("Hello " + player.Name + "! Use the arrow keys to move around. This is a test of a really, really long message that may or may not actually fit within a single line in the head's up display. This should technically wrap around to the next line, so everything should be readable.");
+      hud.ShowMessage("Hello " + player.Name + "! Use the arrow keys to move around. This is a test of a really, really long message that may or may not actually fit within a single line in the head's up display. This should technically wrap around to the next line, so everything should be readable. This is a test of a really, really long message that may or may not actually fit within a single line in the head's up display. This should technically wrap around to the next line, so everything should be readable. This is a test of a really, really long message that may or may not actually fit within a single line in the head's up display. This should technically wrap around to the next line, so everything should be readable.");
 
       ConsoleKeyInfo key;
       do
@@ -105,9 +105,9 @@ namespace MUD
           case ConsoleKey.I:
             hud.ToggleInventory();
             break;
-          default:
-            hud.ShowMessage("Unknown key!");
-            break;
+          //default:
+          //  hud.ShowMessage("Unknown key!");
+          //  break;
         }
       } while (key.Key != ConsoleKey.Escape);
     }
