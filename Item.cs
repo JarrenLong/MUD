@@ -50,13 +50,15 @@ namespace MUD
     public string Name { get; set; } = "";
     public bool IsSolid { get; set; } = false;
     public bool IsItem { get; set; } = false;
-    public int DamageItCauses { get; set; } = 0;
+    public int HealthItCauses { get; set; } = 0;
+    public int PowerItCauses { get; set; } = 0;
+    public int MoneyItCauses { get; set; } = 0;
 
     public Item() { }
 
     public Item(string definition)
     {
-      // Line Format: [char]|[name]|[isSolid (0|1)]|[isItem (0|1)]|[bgColor]|[fgColor]|[damageItCauses (-100 to +100)]
+      // Line Format: [char]|[name]|[isSolid (0|1)]|[isItem (0|1)]|[bgColor]|[fgColor]|[healthItCauses (-100 to +100)]|[powerItCauses (-100 to +100)]|[moneyItCauses (-100 to +100)]
       RenderChar = definition[0];
 
       string[] vals = definition.Substring(2).Split(new char[] { '|' });
@@ -71,7 +73,11 @@ namespace MUD
       if (vals.Length > 4)
         ForegroundColor = int.Parse(vals[4]);
       if (vals.Length > 5)
-        DamageItCauses = int.Parse(vals[5]);
+        HealthItCauses = int.Parse(vals[5]);
+      if (vals.Length > 6)
+        PowerItCauses = int.Parse(vals[6]);
+      if (vals.Length > 7)
+        MoneyItCauses = int.Parse(vals[7]);
     }
   }
 
@@ -92,7 +98,9 @@ namespace MUD
       IsItem = it.IsItem;
       BackgroundColor = it.BackgroundColor;
       ForegroundColor = it.ForegroundColor;
-      DamageItCauses = it.DamageItCauses;
+      HealthItCauses = it.HealthItCauses;
+      PowerItCauses = it.PowerItCauses;
+      MoneyItCauses = it.MoneyItCauses;
       Quantity = 0;
     }
   }

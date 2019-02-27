@@ -6,6 +6,9 @@ namespace MUD
   {
     int X { get; set; }
     int Y { get; set; }
+    int Health { get; set; }
+    int Power { get; set; }
+    int Money { get; set; }
     List<InventoryItem> Inventory { get; }
   }
 
@@ -107,6 +110,8 @@ namespace MUD
 
           // Remove the item from the original map
           Window.Map.OriginalMap[newY, newX] = ' ';
+
+          Window.HUD.ShowMessage(string.Format("You found a {0}!", it.Name));
         }
       }
 
@@ -173,7 +178,10 @@ namespace MUD
       if (it == null)
         return;
 
-      // TODO: Use it
+      // Use it
+      Health += it.HealthItCauses;
+      Power += it.PowerItCauses;
+      Money += it.MoneyItCauses;
 
       // Reduce the quantity on hand, or remove it from inventory completely
       it.Quantity--;

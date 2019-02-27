@@ -76,6 +76,10 @@ namespace MUD
           Message += (it.Selected ? "* " : "") + string.Format("{0} -  {1} ({2})\r\n", it.RenderChar, it.Name, it.Quantity);
       }
 
+      // If we don't already have a message to display, show player stats
+      if (string.IsNullOrEmpty(Message))
+        Message = string.Format("HP: {0}, MP: {1}, Money: {2}, Inventory: {3} Items", Window.Player.Health, Window.Player.Power, Window.Player.Money, Window.Player.Inventory.Count);
+
       // Show messages if any are available
       if (!string.IsNullOrEmpty(Message))
       {
