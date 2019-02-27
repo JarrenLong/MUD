@@ -47,6 +47,9 @@ namespace MUD
 
     public void Move(Direction dir)
     {
+      BufferBounds = Window.Map.BufferBounds;
+      RenderBounds = Window.Map.RenderBounds;
+
       int newX = X, newY = Y;
 
       switch (dir)
