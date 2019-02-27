@@ -5,9 +5,7 @@ namespace MUD
 {
   public class Map : RenderArea
   {
-    public char[,] OriginalMap { get; set; }
-
-    public Map(ConsoleWindow wnd) : base(wnd)
+    public Map(ConsoleWindow wnd, string mapFile = "") : base(wnd)
     {
       Rectangle ws = Window.WindowSize;
 
@@ -16,6 +14,9 @@ namespace MUD
       RenderOrder = 0;
 
       wnd.Map = this;
+
+      if (!string.IsNullOrEmpty(mapFile))
+        Load(mapFile);
     }
 
     public void Load(string mapFile)
@@ -38,7 +39,7 @@ namespace MUD
       }
       BufferBounds.Height = map.Count;
 
-      OriginalMap = new char[BufferBounds.Height, BufferBounds.Width];
+      Buffer = new char[BufferBounds.Height, BufferBounds.Width];
 
       int rr = 0, cc = 0;
       foreach (List<char> h in map)
@@ -46,26 +47,20 @@ namespace MUD
         cc = 0;
         foreach (char w in h)
         {
-          OriginalMap[rr, cc] = w;
+          Buffer[rr, cc] = w;
 
           // Start character position
           if (w == Player.Character)
           {
             Window.Player.X = cc;
             Window.Player.Y = rr;
-            OriginalMap[rr, cc] = ' ';
+            Buffer[rr, cc] = ' ';
           }
 
           cc++;
         }
         rr++;
       }
-    }
-
-    public override void Update()
-    {
-      // Create a full copy of the map
-      Buffer = SetRegion(OriginalMap, BufferBounds, BufferBounds, BufferBounds);
     }
   }
 }

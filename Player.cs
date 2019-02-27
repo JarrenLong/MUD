@@ -76,7 +76,7 @@ namespace MUD
       }
 
       // Solid object check (can't walk through them)
-      Item it = Window.Items[Window.Map.OriginalMap[newY, newX]];
+      Item it = Window.Items[Window.Map.Buffer[newY, newX]];
       if (it != null)
       {
         if (it.IsSolid)
@@ -102,7 +102,7 @@ namespace MUD
             Inventory.Add(new InventoryItem(it) { Quantity = 1 });
 
           // Remove the item from the original map
-          Window.Map.OriginalMap[newY, newX] = ' ';
+          Window.Map.Buffer[newY, newX] = ' ';
 
           Window.HUD.ShowMessage(string.Format("You found a {0}!", it.Name));
         }
