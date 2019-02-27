@@ -67,7 +67,7 @@ namespace MUD
           Message = "";
 
         foreach (InventoryItem it in inv)
-          Message += (it.Selected ? "* " : "") + string.Format("{0} -  {1} ({2})\r\n", it.RenderChar, it.Name, it.Quantity);
+          Message += (it.Selected ? "* " : "") + string.Format("{0} -  {1} ({2})\n", it.RenderChar, it.Name, it.Quantity);
       }
 
       // If we don't already have a message to display, show player stats
