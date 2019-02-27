@@ -25,7 +25,7 @@ namespace MUD
 
     public void ShowMessage(string msg)
     {
-      Message = msg;
+      Message = msg.Replace("\r\n", "\n");
     }
 
     public void ToggleInventory()
@@ -82,6 +82,12 @@ namespace MUD
         {
           string msg = Message;
           int len = msg.Length;
+
+          if (msg.Contains("\n"))
+          {
+            msg = msg.Substring(0, msg.IndexOf('\n') + 1);
+            len = msg.Length;
+          }
           if (len >= BufferBounds.Width - 4)
           {
             msg = msg.Substring(0, BufferBounds.Width - 4);
@@ -97,7 +103,9 @@ namespace MUD
 
             if (x > leftPad && x < BufferBounds.Width)
             {
-              Buffer[y, x] = msg[i];
+              if (msg[i] != '\n')
+                Buffer[y, x] = msg[i];
+
               i++;
             }
           }
