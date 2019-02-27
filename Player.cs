@@ -2,17 +2,7 @@
 
 namespace MUD
 {
-  public interface IPlayer
-  {
-    int X { get; set; }
-    int Y { get; set; }
-    int Health { get; set; }
-    int Power { get; set; }
-    int Money { get; set; }
-    List<InventoryItem> Inventory { get; }
-  }
-
-  public class Player : RenderArea, IPlayer
+  public class Player : RenderArea
   {
     public const char Character = 'X';
 

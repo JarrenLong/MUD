@@ -12,9 +12,9 @@ namespace MUD
     public List<RenderArea> Buffers { get; }
     private char[,] lastRender = null;
     public Dictionary<char, Item> Items { get; }
-    public IMap Map { get; set; }
-    public IPlayer Player { get; set; }
-    public IHeadsUpDisplay HUD { get; set; }
+    public Map Map { get; set; }
+    public Player Player { get; set; }
+    public HUD HUD { get; set; }
 
     public ConsoleWindow()
     {
@@ -101,6 +101,58 @@ namespace MUD
 
       // Store a copy of what we just rendered for the next differential update
       lastRender = renderdata;
+    }
+
+    public void GameLoop()
+    {
+      ConsoleKeyInfo key;
+      do
+      {
+        Print();
+
+        key = Console.ReadKey(true);
+
+        switch (key.Key)
+        {
+          case ConsoleKey.UpArrow:
+            if (HUD.ShowingInventory)
+              Player.SelectInventory(Player.Direction.Up);
+            else
+              Player.Move(Player.Direction.Up);
+            break;
+          case ConsoleKey.DownArrow:
+            if (HUD.ShowingInventory)
+              Player.SelectInventory(Player.Direction.Down);
+            else
+              Player.Move(Player.Direction.Down);
+            break;
+          case ConsoleKey.LeftArrow:
+            if (HUD.ShowingInventory)
+              Player.SelectInventory(Player.Direction.Up);
+            else
+              Player.Move(Player.Direction.Left);
+            break;
+          case ConsoleKey.RightArrow:
+            if (HUD.ShowingInventory)
+              Player.SelectInventory(Player.Direction.Down);
+            else
+              Player.Move(Player.Direction.Right);
+            break;
+          case ConsoleKey.Spacebar:
+            if (HUD.ShowingInventory)
+              Player.UseInventoryItem();
+            break;
+          case ConsoleKey.Escape:
+            HUD.ShowMessage("Closing ...");
+            break;
+          case ConsoleKey.I:
+            HUD.ToggleInventory();
+            break;
+            //default:
+            //  hud.ShowMessage("Unknown key!");
+            //  break;
+        }
+      } while (key.Key != ConsoleKey.Escape);
     }
   }
 }

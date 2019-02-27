@@ -89,6 +89,7 @@ namespace MUD
     public InventoryItem(string definition) : base(definition)
     {
       Quantity = 0;
+      Selected = false;
     }
     public InventoryItem(Item it)
     {
@@ -102,6 +103,7 @@ namespace MUD
       PowerItCauses = it.PowerItCauses;
       MoneyItCauses = it.MoneyItCauses;
       Quantity = 0;
+      Selected = false;
     }
   }
 }

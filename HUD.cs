@@ -2,16 +2,10 @@
 
 namespace MUD
 {
-  public interface IHeadsUpDisplay
-  {
-    void ShowMessage(string msg);
-    bool ShowingInventory { get; }
-  }
-
   /// <summary>
   /// Head's-up display
   /// </summary>
-  public class HUD : RenderArea, IHeadsUpDisplay
+  public class HUD : RenderArea
   {
     private string Message = "";
     public bool ShowingInventory { get; private set; } = false;

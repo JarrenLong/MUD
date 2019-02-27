@@ -3,12 +3,7 @@ using System.IO;
 
 namespace MUD
 {
-  public interface IMap
-  {
-    char[,] OriginalMap { get; set; }
-  }
-
-  public class Map : RenderArea, IMap
+  public class Map : RenderArea
   {
     public char[,] OriginalMap { get; set; }
 

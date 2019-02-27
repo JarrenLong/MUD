@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MUD
+﻿namespace MUD
 {
   class Program
   {
@@ -79,54 +77,7 @@ namespace MUD
 
       hud.ShowMessage("Hello " + player.Name + "! Use the arrow keys to move around. This is a test of a really, really long message that may or may not actually fit within a single line in the head's up display. This should technically wrap around to the next line, so everything should be readable. This is a test of a really, really long message that may or may not actually fit within a single line in the head's up display. This should technically wrap around to the next line, so everything should be readable. This is a test of a really, really long message that may or may not actually fit within a single line in the head's up display. This should technically wrap around to the next line, so everything should be readable.");
 
-      ConsoleKeyInfo key;
-      do
-      {
-        wnd.Print();
-
-        key = Console.ReadKey(true);
-
-        switch (key.Key)
-        {
-          case ConsoleKey.UpArrow:
-            if (hud.ShowingInventory)
-              player.SelectInventory(Player.Direction.Up);
-            else
-              player.Move(Player.Direction.Up);
-            break;
-          case ConsoleKey.DownArrow:
-            if (hud.ShowingInventory)
-              player.SelectInventory(Player.Direction.Down);
-            else
-              player.Move(Player.Direction.Down);
-            break;
-          case ConsoleKey.LeftArrow:
-            if (hud.ShowingInventory)
-              player.SelectInventory(Player.Direction.Up);
-            else
-              player.Move(Player.Direction.Left);
-            break;
-          case ConsoleKey.RightArrow:
-            if (hud.ShowingInventory)
-              player.SelectInventory(Player.Direction.Down);
-            else
-              player.Move(Player.Direction.Right);
-            break;
-          case ConsoleKey.Spacebar:
-            if (hud.ShowingInventory)
-              player.UseInventoryItem();
-            break;
-          case ConsoleKey.Escape:
-            hud.ShowMessage("Closing ...");
-            break;
-          case ConsoleKey.I:
-            hud.ToggleInventory();
-            break;
-            //default:
-            //  hud.ShowMessage("Unknown key!");
-            //  break;
-        }
-      } while (key.Key != ConsoleKey.Escape);
+      wnd.GameLoop();
     }
   }
 }
