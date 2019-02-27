@@ -5,6 +5,7 @@ namespace MUD
   public interface IHeadsUpDisplay
   {
     void ShowMessage(string msg);
+    bool ShowingInventory { get; }
   }
 
   /// <summary>
@@ -13,7 +14,7 @@ namespace MUD
   public class HUD : RenderArea, IHeadsUpDisplay
   {
     private string Message = "";
-    private bool ShowingInventory = false;
+    public bool ShowingInventory { get; private set; } = false;
 
     public HUD(ConsoleWindow wnd) : base(wnd)
     {
@@ -72,7 +73,7 @@ namespace MUD
           Message = "";
 
         foreach (InventoryItem it in inv)
-          Message += string.Format("{0} -  {1} ({2})\r\n", it.RenderChar, it.Name, it.Quantity);
+          Message += (it.Selected ? "* " : "") + string.Format("{0} -  {1} ({2})\r\n", it.RenderChar, it.Name, it.Quantity);
       }
 
       // Show messages if any are available

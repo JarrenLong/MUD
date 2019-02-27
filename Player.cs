@@ -128,5 +128,57 @@ namespace MUD
       X = newX;
       Y = newY;
     }
+
+    public void SelectInventory(Direction dir)
+    {
+      bool up = (dir == Direction.Up || dir == Direction.Left);
+      bool found = false;
+
+      for (int i = 0; i < Inventory.Count; i++)
+      {
+        if (Inventory[i].Selected)
+        {
+          Inventory[i].Selected = false;
+
+          if (i == 0 && !up)
+            i = Inventory.Count - 1;
+          else if (i == Inventory.Count - 1 && up)
+            i = 0;
+          else
+            i += (up ? 1 : -1);
+
+          Inventory[i].Selected = true;
+          found = true;
+          break;
+        }
+      }
+
+      if (!found && Inventory.Count > 0)
+        Inventory[0].Selected = true;
+    }
+
+    public void UseInventoryItem()
+    {
+      // Grab the selected inventory item
+      InventoryItem it = null;
+      for (int i = 0; i < Inventory.Count; i++)
+      {
+        if (Inventory[i].Selected)
+        {
+          it = Inventory[i];
+          break;
+        }
+      }
+
+      if (it == null)
+        return;
+
+      // TODO: Use it
+
+      // Reduce the quantity on hand, or remove it from inventory completely
+      it.Quantity--;
+      if (it.Quantity == 0)
+        Inventory.Remove(it);
+    }
   }
 }

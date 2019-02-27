@@ -89,16 +89,32 @@ namespace MUD
         switch (key.Key)
         {
           case ConsoleKey.UpArrow:
-            player.Move(Player.Direction.Up);
+            if (hud.ShowingInventory)
+              player.SelectInventory(Player.Direction.Up);
+            else
+              player.Move(Player.Direction.Up);
             break;
           case ConsoleKey.DownArrow:
-            player.Move(Player.Direction.Down);
+            if (hud.ShowingInventory)
+              player.SelectInventory(Player.Direction.Down);
+            else
+              player.Move(Player.Direction.Down);
             break;
           case ConsoleKey.LeftArrow:
-            player.Move(Player.Direction.Left);
+            if (hud.ShowingInventory)
+              player.SelectInventory(Player.Direction.Up);
+            else
+              player.Move(Player.Direction.Left);
             break;
           case ConsoleKey.RightArrow:
-            player.Move(Player.Direction.Right);
+            if (hud.ShowingInventory)
+              player.SelectInventory(Player.Direction.Down);
+            else
+              player.Move(Player.Direction.Right);
+            break;
+          case ConsoleKey.Spacebar:
+            if (hud.ShowingInventory)
+              player.UseInventoryItem();
             break;
           case ConsoleKey.Escape:
             hud.ShowMessage("Closing ...");

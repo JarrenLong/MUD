@@ -78,6 +78,7 @@ namespace MUD
   public class InventoryItem : Item
   {
     public int Quantity { get; set; }
+    public bool Selected { get; set; }
 
     public InventoryItem(string definition) : base(definition)
     {
