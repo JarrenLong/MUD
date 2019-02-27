@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MUD
 {
@@ -31,8 +32,7 @@ namespace MUD
 
     public override void Update()
     {
-      // Do render updates here
-      Buffer = new char[BufferBounds.Height, BufferBounds.Width];
+      Array.Clear(Buffer, 0, Buffer.Length);
       // Set the player's position
       Buffer[Y, X] = Character;
     }

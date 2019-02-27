@@ -27,6 +27,7 @@ namespace MUD
       List<List<char>> map = new List<List<char>>();
 
       string[] lines = File.ReadAllLines(mapFile);
+      int width = 0;
       foreach (string r in lines)
       {
         List<char> buf = new List<char>();
@@ -34,12 +35,11 @@ namespace MUD
           buf.Add(c);
         map.Add(buf);
 
-        if (BufferBounds.Width <= buf.Count)
-          BufferBounds.Width = buf.Count;
+        if (width <= buf.Count)
+          width = buf.Count;
       }
-      BufferBounds.Height = map.Count;
 
-      Buffer = new char[BufferBounds.Height, BufferBounds.Width];
+      BufferBounds = new Rectangle(0, 0, width, map.Count);
 
       int rr = 0, cc = 0;
       foreach (List<char> h in map)

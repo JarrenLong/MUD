@@ -7,7 +7,23 @@
     public bool Scrollable { get; set; }
     public int ScrollCenterX { get; set; }
     public int ScrollCenterY { get; set; }
-    public Rectangle BufferBounds { get; set; }
+    private Rectangle _BufferBounds { get; set; }
+    public Rectangle BufferBounds
+    {
+      get { return _BufferBounds; }
+      set
+      {
+        if ((_BufferBounds == null && value != null) ||
+          _BufferBounds.X != value.X ||
+          _BufferBounds.Y != value.Y ||
+          _BufferBounds.Width != value.Width ||
+          _BufferBounds.Height != value.Height)
+        {
+          _BufferBounds = value;
+          Buffer = new char[_BufferBounds.Height, _BufferBounds.Width];
+        }
+      }
+    }
     public Rectangle RenderBounds { get; set; }
     public Rectangle WindowOffset { get; set; }
     public char[,] Buffer { get; set; }

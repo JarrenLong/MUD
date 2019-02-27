@@ -35,8 +35,6 @@ namespace MUD
 
     public override void Update()
     {
-      Buffer = new char[BufferBounds.Height, BufferBounds.Width];
-
       for (int y = 0; y < BufferBounds.Height; y++)
       {
         for (int x = 0; x < BufferBounds.Width; x++)
