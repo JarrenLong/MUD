@@ -109,11 +109,24 @@ namespace MUD
       lastRender = renderdata;
     }
 
+    private class KeyState
+    {
+      public bool IsDown { get; set; }
+      public bool StillDown { get; set; }
+      public bool WasDownNowUp { get; set; }
+    }
+
     public void GameLoop()
     {
       bool exit = false;
+      bool refresh = false;
       int loopTime = 1000 / TargetFPS;
       int lastRunTime = 0;
+      Dictionary<Keys, KeyState> down = new Dictionary<Keys, KeyState>();
+
+      foreach (Keys k in Enum.GetValues(typeof(Keys)))
+        if (!down.ContainsKey(k))
+          down.Add(k, new KeyState());
 
       Print();
 
@@ -125,41 +138,67 @@ namespace MUD
 
         lastRunTime = Environment.TickCount;
 
-        List<Keys> down = GetPressedKeys();
-        // If there's no key pressed, reset the polling loop (nothing's gonna change)
-        if (down.Count == 0)
-          continue;
+        GetPressedKeys(ref down);
 
-        foreach (Keys k in down)
+        refresh = false;
+
+        foreach (Keys k in down.Keys)
         {
+          if (!down[k].IsDown)
+            continue;
+
+          refresh = true;
+
           switch (k)
           {
             case Keys.Up:
               if (HUD.ShowingInventory)
-                Player.SelectInventory(Player.Direction.Up);
+              {
+                if (down[k].StillDown)
+                  refresh = false;
+                else
+                  Player.SelectInventory(Player.Direction.Up);
+              }
               else
                 Player.Move(Player.Direction.Up);
               break;
             case Keys.Down:
               if (HUD.ShowingInventory)
-                Player.SelectInventory(Player.Direction.Down);
+              {
+                if (down[k].StillDown)
+                  refresh = false;
+                else
+                  Player.SelectInventory(Player.Direction.Down);
+              }
               else
                 Player.Move(Player.Direction.Down);
               break;
             case Keys.Left:
               if (HUD.ShowingInventory)
-                Player.SelectInventory(Player.Direction.Up);
+              {
+                if (down[k].StillDown)
+                  refresh = false;
+                else
+                  Player.SelectInventory(Player.Direction.Up);
+              }
               else
                 Player.Move(Player.Direction.Left);
               break;
             case Keys.Right:
               if (HUD.ShowingInventory)
-                Player.SelectInventory(Player.Direction.Down);
+              {
+                if (down[k].StillDown)
+                  refresh = false;
+                else
+                  Player.SelectInventory(Player.Direction.Down);
+              }
               else
                 Player.Move(Player.Direction.Right);
               break;
             case Keys.Space:
-              if (HUD.ShowingInventory)
+              if (down[k].StillDown)
+                refresh = false;
+              else if (HUD.ShowingInventory)
                 Player.UseInventoryItem();
               break;
             case Keys.Escape:
@@ -167,27 +206,42 @@ namespace MUD
               exit = true;
               break;
             case Keys.I:
-              HUD.ToggleInventory();
+              if (down[k].StillDown)
+                refresh = false;
+              else
+                HUD.ToggleInventory();
+              break;
+            default:
+              refresh = false;
               break;
           }
         }
 
-        Print();
+        if (refresh)
+          Print();
       } while (!exit);
 
       Thread.Sleep(1000);
     }
 
-    private List<Keys> GetPressedKeys()
+    private void GetPressedKeys(ref Dictionary<Keys, KeyState> ret)
     {
-      List<Keys> ret = new List<Keys>();
-      int[] keyVals = (int[])Enum.GetValues(typeof(Keys));
-
-      foreach (int k in keyVals)
-        if ((GetKeyState(k) & 0x8000) != 0)
-          ret.Add((Keys)k);
-
-      return ret;
+      foreach (Keys k in Enum.GetValues(typeof(Keys)))
+      {
+        if ((GetKeyState((int)k) & 0x8000) != 0)
+        {
+          if (!ret[k].IsDown)
+            ret[k].IsDown = true;
+          else
+            ret[k].StillDown = true;
+        }
+        else
+        {
+          ret[k].WasDownNowUp = ret[k].IsDown;
+          ret[k].IsDown = false;
+          ret[k].StillDown = false;
+        }
+      }
     }
 
     [DllImport("user32.dll")]
