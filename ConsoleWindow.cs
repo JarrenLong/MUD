@@ -8,7 +8,16 @@ namespace MUD
   public class ConsoleWindow
   {
     public int TargetFPS { get; set; }
-    public Rectangle WindowSize { get; set; }
+    private Rectangle _wndSize = null;
+    public Rectangle WindowSize
+    {
+      get { return _wndSize; }
+      set
+      {
+        _wndSize = value;
+        Console.SetWindowSize(_wndSize.Width, _wndSize.Height);
+      }
+    }
     public List<RenderArea> Buffers { get; }
     private char[,] lastRender = null;
     public Dictionary<char, Item> Items { get; }
@@ -25,11 +34,6 @@ namespace MUD
       WindowSize = new Rectangle(0, 0, 80, 40);
       Buffers = new List<RenderArea>();
       Items = new Dictionary<char, Item>();
-    }
-
-    public void ResizeWindow()
-    {
-      Console.SetWindowSize(WindowSize.Width, WindowSize.Height);
     }
 
     public void LoadItems(string itemFile)

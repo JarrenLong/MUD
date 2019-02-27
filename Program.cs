@@ -67,7 +67,6 @@
       {
         WindowSize = new Rectangle(0, 0, wndX, wndY)
       };
-      wnd.ResizeWindow();
       wnd.LoadItems(itemFile);
 
       Player player = new Player(wnd);
@@ -75,11 +74,13 @@
       map.Load(mapFile);
       HUD hud = new HUD(wnd);
 
-      hud.ShowMessage(@"Hello " + player.Name + @"! Use the arrow keys to move around. This is a
-test of a really, really long message
-that may or may not actually fit within a single line in the head's up display.
+      hud.ShowMessage(@"Hello " + player.Name + @"!
 
-This should technically wrap around to the next line, so everything should be readable.
+Use the arrow keys to move around. This is a
+test of a really, really long message
+that may or may not actually fit within a line in the head's up display.
+
+This should wrap around to the next line, everything should be readable.
 
 
 
