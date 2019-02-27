@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
 namespace MUD
 {
-  public class ConsoleWindow
+  public partial class ConsoleWindow
   {
     public int TargetFPS { get; set; }
     private Rectangle _wndSize = null;
@@ -110,7 +111,6 @@ namespace MUD
 
     public void GameLoop()
     {
-      ConsoleKeyInfo key;
       bool exit = false;
       int loopTime = 1000 / TargetFPS;
       int lastRunTime = 0;
@@ -121,56 +121,55 @@ namespace MUD
       {
         // Wait for the next polling cycle
         while ((Environment.TickCount - lastRunTime) < loopTime)
-          Thread.Sleep(1);
+          Thread.Sleep(10);
 
         lastRunTime = Environment.TickCount;
 
+        List<Keys> down = GetPressedKeys();
         // If there's no key pressed, reset the polling loop (nothing's gonna change)
-        while (!Console.KeyAvailable)
+        if (down.Count == 0)
           continue;
 
-        key = Console.ReadKey(true);
-
-        switch (key.Key)
+        foreach (Keys k in down)
         {
-          case ConsoleKey.UpArrow:
-            if (HUD.ShowingInventory)
-              Player.SelectInventory(Player.Direction.Up);
-            else
-              Player.Move(Player.Direction.Up);
-            break;
-          case ConsoleKey.DownArrow:
-            if (HUD.ShowingInventory)
-              Player.SelectInventory(Player.Direction.Down);
-            else
-              Player.Move(Player.Direction.Down);
-            break;
-          case ConsoleKey.LeftArrow:
-            if (HUD.ShowingInventory)
-              Player.SelectInventory(Player.Direction.Up);
-            else
-              Player.Move(Player.Direction.Left);
-            break;
-          case ConsoleKey.RightArrow:
-            if (HUD.ShowingInventory)
-              Player.SelectInventory(Player.Direction.Down);
-            else
-              Player.Move(Player.Direction.Right);
-            break;
-          case ConsoleKey.Spacebar:
-            if (HUD.ShowingInventory)
-              Player.UseInventoryItem();
-            break;
-          case ConsoleKey.Escape:
-            HUD.ShowMessage("Closing ...");
-            exit = true;
-            break;
-          case ConsoleKey.I:
-            HUD.ToggleInventory();
-            break;
-          default:
-            HUD.ShowMessage("Unknown key!");
-            break;
+          switch (k)
+          {
+            case Keys.Up:
+              if (HUD.ShowingInventory)
+                Player.SelectInventory(Player.Direction.Up);
+              else
+                Player.Move(Player.Direction.Up);
+              break;
+            case Keys.Down:
+              if (HUD.ShowingInventory)
+                Player.SelectInventory(Player.Direction.Down);
+              else
+                Player.Move(Player.Direction.Down);
+              break;
+            case Keys.Left:
+              if (HUD.ShowingInventory)
+                Player.SelectInventory(Player.Direction.Up);
+              else
+                Player.Move(Player.Direction.Left);
+              break;
+            case Keys.Right:
+              if (HUD.ShowingInventory)
+                Player.SelectInventory(Player.Direction.Down);
+              else
+                Player.Move(Player.Direction.Right);
+              break;
+            case Keys.Space:
+              if (HUD.ShowingInventory)
+                Player.UseInventoryItem();
+              break;
+            case Keys.Escape:
+              HUD.ShowMessage("Closing ...");
+              exit = true;
+              break;
+            case Keys.I:
+              HUD.ToggleInventory();
+              break;
+          }
         }
 
         Print();
@@ -178,5 +177,20 @@ namespace MUD
 
       Thread.Sleep(1000);
     }
+
+    private List<Keys> GetPressedKeys()
+    {
+      List<Keys> ret = new List<Keys>();
+      int[] keyVals = (int[])Enum.GetValues(typeof(Keys));
+
+      foreach (int k in keyVals)
+        if ((GetKeyState(k) & 0x8000) != 0)
+          ret.Add((Keys)k);
+
+      return ret;
+    }
+
+    [DllImport("user32.dll")]
+    static extern short GetKeyState(int nVirtKey);
   }
 }
