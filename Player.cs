@@ -138,12 +138,12 @@ namespace MUD
         {
           Inventory[i].Selected = false;
 
-          if (i == 0 && !up)
+          if (i == 0 && up)
             i = Inventory.Count - 1;
-          else if (i == Inventory.Count - 1 && up)
+          else if (i == Inventory.Count - 1 && !up)
             i = 0;
           else
-            i += (up ? 1 : -1);
+            i += (up ? -1 : 1);
 
           Inventory[i].Selected = true;
           found = true;
