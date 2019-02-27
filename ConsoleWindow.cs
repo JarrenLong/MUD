@@ -128,6 +128,11 @@ namespace MUD
         if (!down.ContainsKey(k))
           down.Add(k, new KeyState());
 
+      ConsoleMusic cm = new ConsoleMusic();
+      //cm.Test();
+      //cm.Test2();
+      cm.Test3();
+
       Print();
 
       do
