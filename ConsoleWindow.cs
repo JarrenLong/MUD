@@ -202,8 +202,13 @@ namespace MUD
                 Player.UseInventoryItem();
               break;
             case Keys.Escape:
-              HUD.ShowMessage("Closing ...");
-              exit = true;
+              if (HUD.ShowingInventory)
+                HUD.ToggleInventory();
+              else if (!down[k].StillDown)
+              {
+                HUD.ShowMessage("Closing ...");
+                exit = true;
+              }
               break;
             case Keys.I:
               if (down[k].StillDown)
