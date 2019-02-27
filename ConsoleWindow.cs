@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace MUD
 {
@@ -110,9 +111,23 @@ namespace MUD
     public void GameLoop()
     {
       ConsoleKeyInfo key;
+      bool exit = false;
+      int loopTime = 1000 / TargetFPS;
+      int lastRunTime = 0;
+
+      Print();
+
       do
       {
-        Print();
+        // Wait for the next polling cycle
+        while ((Environment.TickCount - lastRunTime) < loopTime)
+          Thread.Sleep(1);
+
+        lastRunTime = Environment.TickCount;
+
+        // If there's no key pressed, reset the polling loop (nothing's gonna change)
+        while (!Console.KeyAvailable)
+          continue;
 
         key = Console.ReadKey(true);
 
@@ -148,15 +163,20 @@ namespace MUD
             break;
           case ConsoleKey.Escape:
             HUD.ShowMessage("Closing ...");
+            exit = true;
             break;
           case ConsoleKey.I:
             HUD.ToggleInventory();
             break;
-            //default:
-            //  hud.ShowMessage("Unknown key!");
-            //  break;
+          default:
+            HUD.ShowMessage("Unknown key!");
+            break;
         }
-      } while (key.Key != ConsoleKey.Escape);
+
+        Print();
+      } while (!exit);
+
+      Thread.Sleep(1000);
     }
   }
 }
