@@ -87,7 +87,7 @@ namespace MUD
       Item it = null;
       for (int y = 0; y < wndH; y++)
         for (int x = 0; x < wndW; x++)
-          if (lastRender == null || lastRender[y, x] != renderdata[y, x])
+          if (lastRender == null || lastRender.Length != renderdata.Length || lastRender[y, x] != renderdata[y, x])
           {
             try
             {
