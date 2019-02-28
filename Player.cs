@@ -82,7 +82,7 @@ namespace MUD
       if (it != null)
       {
         if (it.IsSolid)
-        //{
+          //{
           //Window.HUD.ShowMessage("That's a wall, and you're not Bobby.");
           return;
         //}
@@ -206,6 +206,11 @@ namespace MUD
       {
         Window.HUD.ShowMessage(it.Description);
       }
+    }
+
+    public void ShowPlayerStats()
+    {
+      Window.HUD.ShowMessage(string.Format("HP: {0}, MP: {1}, Money: {2}, Inventory: {3} Items", Health, Power, Money, Inventory.Count));
     }
   }
 }

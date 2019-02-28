@@ -223,6 +223,12 @@ namespace MUD
               else
                 HUD.ToggleInventory();
               break;
+            case Keys.S:
+              if (down[k].StillDown)
+                refresh = false;
+              else
+                Player.ShowPlayerStats();
+              break;
             default:
               refresh = false;
               break;
