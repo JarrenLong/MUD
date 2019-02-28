@@ -32,7 +32,7 @@ namespace MUD
       Console.CursorVisible = false;
       Console.OutputEncoding = Encoding.ASCII;
 
-      TargetFPS = 30;
+      TargetFPS = 15;
       WindowSize = new Rectangle(0, 0, 80, 40);
       Buffers = new List<RenderArea>();
       Items = new Dictionary<char, Item>();
