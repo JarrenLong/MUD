@@ -121,8 +121,8 @@ namespace MUD
           Buffer[BufferBounds.Height - 3, BufferBounds.Width - 2] = '~';
       }
 
-      // Resize the maps rendering area based on whether or not we are showing the HUD
-      Window.Map.RenderBounds = !IsVisibleArea ? Window.WindowSize : new Rectangle(0, 0, Window.WindowSize.Width, (Window.WindowSize.Height / 4) * 3);
+      // TODO: Resize the maps rendering area based on whether or not we are showing the HUD
+      //Window.Map.RenderBounds = !IsVisibleArea ? Window.WindowSize : new Rectangle(0, 0, Window.WindowSize.Width, (Window.WindowSize.Height / 4) * 3);
     }
   }
 }
