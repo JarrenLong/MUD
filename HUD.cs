@@ -15,7 +15,7 @@ namespace MUD
       Rectangle ws = Window.WindowSize;
 
       BufferBounds = new Rectangle(0, 0, ws.Width, ws.Height / 4);
-      RenderBounds = BufferBounds;
+      RenderBounds = new Rectangle(0, 0, ws.Width, ws.Height / 4); ;
       WindowOffset = new Rectangle(0, (ws.Height / 4) * 3, ws.Width, ws.Height / 4);
 
       RenderOrder = 0;
