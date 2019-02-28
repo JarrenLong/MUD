@@ -58,6 +58,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="maps\pacman.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="maps\test.items">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
