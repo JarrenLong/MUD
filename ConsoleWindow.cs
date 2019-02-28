@@ -18,6 +18,8 @@ namespace MUD
       {
         _wndSize = value;
         Console.SetWindowSize(_wndSize.Width, _wndSize.Height);
+        // +2 to dims to make sure the console buffer has room to breathe
+        Console.SetBufferSize(_wndSize.Width + 2, _wndSize.Height + 12);
       }
     }
     public List<RenderArea> Buffers { get; }
