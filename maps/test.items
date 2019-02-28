@@ -25,9 +25,9 @@ w|???|0|0|0|15|0|0|0
 x|???|0|0|0|15|0|0|0
 y|???|0|0|0|15|0|0|0
 z|???|0|0|0|15|0|0|0
-A|Health Potion|0|1|0|12|10|0|0
-B|Mana Potion|0|1|0|15|0|10|0
-C|Coin|0|1|0|15|0|0|1
+A|Health Potion|0|1|0|12|10|0|0|A small health potion, just what the doctor ordered.
+B|Mana Potion|0|1|0|15|0|10|0|A small mana potion to put some pep in your step.
+C|Coin|0|1|0|15|0|0|1|Money!!!
 D|???|0|0|0|15|0|0|0
 E|End of Level|0|0|14|15|0|0|0
 F|???|0|0|0|15|0|0|0
@@ -67,12 +67,12 @@ Z|???|0|0|0|15|0|0|0
 ~|???|0|0|0|15|0|0|0
 !|???|0|0|0|15|0|0|0
 @|???|0|0|0|15|0|0|0
-#|Wall|1|0|0|15|0|0|0
+#|Wall|1|0|0|15|0|0|0|That is a wall. You cannot walk through that.
 $|???|0|0|0|15|0|0|0
 %|???|0|0|0|15|0|0|0
 ^|???|0|0|0|15|0|0|0
 &|???|0|0|0|15|0|0|0
-*|Grass|0|0|2|10|0|0|0
+*|Grass|0|0|2|10|0|0|0|Aaahhhh...grass. A dog's best friend. So green and nice.
 (|???|0|0|0|15|0|0|0
 )|???|0|0|0|15|0|0|0
 _|???|0|0|0|15|0|0|0

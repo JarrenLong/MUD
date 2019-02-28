@@ -128,10 +128,10 @@ namespace MUD
         if (!down.ContainsKey(k))
           down.Add(k, new KeyState());
 
-      ConsoleMusic cm = new ConsoleMusic();
-      //cm.Test();
-      //cm.Test2();
-      cm.Test3();
+      //ConsoleMusic cm = new ConsoleMusic();
+      ////cm.Test();
+      ////cm.Test2();
+      //cm.Test3();
 
       Print();
 
@@ -205,6 +205,8 @@ namespace MUD
                 refresh = false;
               else if (HUD.ShowingInventory)
                 Player.UseInventoryItem();
+              else
+                Player.ShowItemInfo();
               break;
             case Keys.Escape:
               if (HUD.ShowingInventory)

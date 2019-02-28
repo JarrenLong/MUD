@@ -10,6 +10,7 @@ namespace MUD
     public string Name { get; set; }
     public int X { get; set; }
     public int Y { get; set; }
+    public Direction Facing { get; set; }
     public int Health { get; set; }
     public int Power { get; set; }
     public int Money { get; set; }
@@ -22,6 +23,7 @@ namespace MUD
       Name = "Test Player";
       X = 10;
       Y = 10;
+      Facing = Direction.Up;
       Health = 100;
       Power = 100;
       Money = 50;
@@ -80,10 +82,10 @@ namespace MUD
       if (it != null)
       {
         if (it.IsSolid)
-        {
-          Window.HUD.ShowMessage("That's a wall, and you're not Bobby.");
+        //{
+          //Window.HUD.ShowMessage("That's a wall, and you're not Bobby.");
           return;
-        }
+        //}
         else if (it.IsItem)
         {
           // Pick up the item and add it to the player's inventory
@@ -125,6 +127,7 @@ namespace MUD
       // Store the player's new position
       X = newX;
       Y = newY;
+      Facing = dir;
     }
 
     public void SelectInventory(Direction dir)
@@ -180,6 +183,29 @@ namespace MUD
       it.Quantity--;
       if (it.Quantity == 0)
         Inventory.Remove(it);
+    }
+
+    /// <summary>
+    /// Displays the description of the item directly in front of the player
+    /// </summary>
+    public void ShowItemInfo()
+    {
+      int mX = X, mY = Y;
+
+      switch (Facing)
+      {
+        case Direction.Up: mY--; break;
+        case Direction.Down: mY++; break;
+        case Direction.Left: mX--; break;
+        case Direction.Right: mX++; break;
+      }
+
+      // Solid object check (can't walk through them)
+      Item it = Window.Items[Window.Map.Buffer[mY, mX]];
+      if (it != null && !string.IsNullOrEmpty(it.Description))
+      {
+        Window.HUD.ShowMessage(it.Description);
+      }
     }
   }
 }

@@ -53,12 +53,13 @@ namespace MUD
     public int HealthItCauses { get; set; } = 0;
     public int PowerItCauses { get; set; } = 0;
     public int MoneyItCauses { get; set; } = 0;
+    public string Description { get; set; } = "";
 
     public Item() { }
 
     public Item(string definition)
     {
-      // Line Format: [char]|[name]|[isSolid (0|1)]|[isItem (0|1)]|[bgColor]|[fgColor]|[healthItCauses (-100 to +100)]|[powerItCauses (-100 to +100)]|[moneyItCauses (-100 to +100)]
+      // Line Format: [char]|[name]|[isSolid (0|1)]|[isItem (0|1)]|[bgColor]|[fgColor]|[healthItCauses (-100 to +100)]|[powerItCauses (-100 to +100)]|[moneyItCauses (-100 to +100)]|[Description]
       RenderChar = definition[0];
 
       string[] vals = definition.Substring(2).Split(new char[] { '|' });
@@ -78,6 +79,8 @@ namespace MUD
         PowerItCauses = int.Parse(vals[6]);
       if (vals.Length > 7)
         MoneyItCauses = int.Parse(vals[7]);
+      if (vals.Length > 8)
+        Description = vals[8];
     }
   }
 
