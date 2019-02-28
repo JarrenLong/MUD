@@ -11,7 +11,7 @@ namespace MUD
 
       RenderBounds = new Rectangle(0, 0, ws.Width, (ws.Height / 4) * 3);
 
-      RenderOrder = 0;
+      RenderOrder = 1;
 
       wnd.Map = this;
 

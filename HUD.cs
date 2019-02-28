@@ -18,7 +18,7 @@ namespace MUD
       RenderBounds = BufferBounds;
       WindowOffset = new Rectangle(0, (ws.Height / 4) * 3, ws.Width, ws.Height / 4);
 
-      RenderOrder = 1;
+      RenderOrder = 0;
       IsVisibleArea = false;
 
       Window.HUD = this;
