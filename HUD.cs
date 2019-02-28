@@ -19,6 +19,7 @@ namespace MUD
       WindowOffset = new Rectangle(0, (ws.Height / 4) * 3, ws.Width, ws.Height / 4);
 
       RenderOrder = 1;
+      IsVisibleArea = false;
 
       Window.HUD = this;
     }
@@ -35,6 +36,8 @@ namespace MUD
 
     public override void Update()
     {
+      IsVisibleArea = false;
+
       for (int y = 0; y < BufferBounds.Height; y++)
       {
         for (int x = 0; x < BufferBounds.Width; x++)
@@ -58,6 +61,8 @@ namespace MUD
 
       if (ShowingInventory)
       {
+        IsVisibleArea = true;
+
         List<InventoryItem> inv = Window.Player.Inventory;
         if (inv == null || inv.Count == 0)
           Message = "You don't have anything in your inventory!";
@@ -68,13 +73,15 @@ namespace MUD
           Message += (it.Selected ? "* " : "") + string.Format("{0} -  {1} ({2})\n", it.RenderChar, it.Name, it.Quantity);
       }
 
-      // If we don't already have a message to display, show player stats
-      if (string.IsNullOrEmpty(Message))
-        Message = string.Format("HP: {0}, MP: {1}, Money: {2}, Inventory: {3} Items", Window.Player.Health, Window.Player.Power, Window.Player.Money, Window.Player.Inventory.Count);
+      //// If we don't already have a message to display, show player stats
+      //if (string.IsNullOrEmpty(Message))
+      //  Message = string.Format("HP: {0}, MP: {1}, Money: {2}, Inventory: {3} Items", Window.Player.Health, Window.Player.Power, Window.Player.Money, Window.Player.Inventory.Count);
 
       // Show messages if any are available
       if (!string.IsNullOrEmpty(Message))
       {
+        IsVisibleArea = true;
+
         int y = 1;
         do
         {
@@ -115,6 +122,11 @@ namespace MUD
         // If we still have more message to show, show an indicator in the bottom right corner of the HUD.
         if (!string.IsNullOrEmpty(Message))
           Buffer[BufferBounds.Height - 3, BufferBounds.Width - 2] = '~';
+      }
+
+      if (!IsVisibleArea)
+      {
+        Window.Map.RenderBounds = !IsVisibleArea ? Window.WindowSize : new Rectangle(0, 0, Window.WindowSize.Width, (Window.WindowSize.Height / 4) * 3);
       }
     }
   }
