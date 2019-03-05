@@ -7,3 +7,4 @@
 /obj/Debug
 *.user
 /packages/NAudio.1.8.5
+*.log
