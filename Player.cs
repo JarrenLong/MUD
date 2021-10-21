@@ -108,6 +108,10 @@ namespace MUD
 
           Window.HUD.ShowMessage(string.Format("You found a {0}!", it.Name));
         }
+        else if (!string.IsNullOrEmpty(it.Description))
+        {
+          Window.HUD.ShowMessage(it.Description);
+        }
       }
 
       Rectangle rb = RenderBounds;
