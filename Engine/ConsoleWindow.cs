@@ -27,6 +27,7 @@ namespace MUD
     public Dictionary<char, Item> Items { get; }
     public Map Map { get; set; }
     public Player Player { get; set; }
+    public List<Enemy> Enemies { get; }
     public HUD HUD { get; set; }
 
     public ConsoleWindow()
@@ -38,6 +39,7 @@ namespace MUD
       WindowSize = new Rectangle(0, 0, 80, 40);
       Buffers = new List<RenderArea>();
       Items = new Dictionary<char, Item>();
+      Enemies = new List<Enemy>();
     }
 
     public void LoadItems(string itemFile)
@@ -148,6 +150,11 @@ namespace MUD
         GetPressedKeys(ref down);
 
         refresh = false;
+
+        foreach(Enemy e in Enemies)
+        {
+          e.Update();
+        }
 
         foreach (Keys k in down.Keys)
         {

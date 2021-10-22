@@ -5,7 +5,8 @@ namespace MUD
 {
   public class Player : RenderArea
   {
-    public const char Character = 'X';
+    public const char DefaultCharacter = 'X';
+    public char Character = DefaultCharacter;
 
     public string Name { get; set; }
     public int X { get; set; }
@@ -14,7 +15,7 @@ namespace MUD
     public int Health { get; set; }
     public int Power { get; set; }
     public int Money { get; set; }
-    public List<InventoryItem> Inventory { get; }
+    public List<InventoryItem> Inventory { get; set; }
 
     public Player(ConsoleWindow wnd) : base(wnd)
     {
@@ -28,13 +29,37 @@ namespace MUD
       Power = 100;
       Money = 50;
       Inventory = new List<InventoryItem>();
-
-      Window.Player = this;
     }
 
     public override void Update()
     {
       Array.Clear(Buffer, 0, Buffer.Length);
+
+      // If the player is supposed to be moving along a path, do it (one step in each direction per update).
+      if (targetX != -1)
+      {
+        if (X < targetX)
+          X++;
+        else if (X > targetX)
+          X--;
+
+        if (targetX == X)
+          targetX = -1;
+      }
+      if (targetY != -1)
+      {
+        if (Y < targetY)
+          Y++;
+        else if (Y > targetY)
+          Y--;
+
+        if (targetY == Y)
+          targetY = -1;
+      }
+
+      if (IsMovingTo && targetX == -1 && targetY == -1)
+        IsMovingTo = false;
+
       // Set the player's position
       Buffer[Y, X] = Character;
     }
@@ -135,7 +160,16 @@ namespace MUD
       Facing = dir;
     }
 
-    public void SelectInventory(Direction dir)
+    private int targetX = -1, targetY = -1;
+    public bool IsMovingTo { get; private set; } = false;
+    public void MoveTo(int x, int y)
+    {
+      targetX = x;
+      targetY = y;
+      IsMovingTo = true;
+    }
+
+    public virtual void SelectInventory(Direction dir)
     {
       bool up = (dir == Direction.Up || dir == Direction.Left);
       bool found = false;
@@ -163,7 +197,7 @@ namespace MUD
         Inventory[0].Selected = true;
     }
 
-    public void UseInventoryItem()
+    public virtual void UseInventoryItem()
     {
       // Grab the selected inventory item
       InventoryItem it = null;
@@ -193,7 +227,7 @@ namespace MUD
     /// <summary>
     /// Displays the description of the item directly in front of the player
     /// </summary>
-    public void ShowItemInfo()
+    public virtual void ShowItemInfo()
     {
       int mX = X, mY = Y;
 
@@ -213,7 +247,7 @@ namespace MUD
       }
     }
 
-    public void ShowPlayerStats()
+    public virtual void ShowPlayerStats()
     {
       Window.HUD.ShowMessage(string.Format("HP: {0}, MP: {1}, Money: {2}, Inventory: {3} Items", Health, Power, Money, Inventory.Count));
     }

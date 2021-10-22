@@ -50,7 +50,7 @@ namespace MUD
           Buffer[rr, cc] = w;
 
           // Start character position
-          if (w == Player.Character)
+          if (w == Player.DefaultCharacter)
           {
             Window.Player.X = cc;
             Window.Player.Y = rr;
