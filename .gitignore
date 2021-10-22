@@ -2,10 +2,13 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/MUD/v15
-/bin/Debug
-/obj/Debug
+/.vs
 *.user
-/packages/NAudio.1.8.5
 *.log
-/.vs/MUD/v16/.suo
+/bin
+/obj
+/packages
+/Engine/bin
+/Engine/obj
+/Game/bin
+/Game/obj

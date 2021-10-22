@@ -1,11 +1,11 @@
-﻿namespace MUD
+﻿namespace MUD.Game
 {
   class Program
   {
     static void Main(string[] args)
     {
       int wndX = 80, wndY = 40;
-      string itemFile = ".\\maps\\test.items", mapFile = ".\\maps\\test.map";
+      string itemFile = "..\\..\\..\\maps\\test.items", mapFile = "..\\..\\..\\maps\\test.map";
 
       #region Command-line arguments
       if (args != null && args.Length > 0)
