@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace MUD.Game
 {
@@ -6,7 +7,7 @@ namespace MUD.Game
   {
     static void Main(string[] args)
     {
-      int wndX = 80, wndY = 40;
+      int wndX = Console.WindowWidth, wndY = Console.WindowHeight;
       string itemFile = "..\\..\\..\\maps\\test.items", mapFile = "..\\..\\..\\maps\\test.map";
 
       #region Command-line arguments
